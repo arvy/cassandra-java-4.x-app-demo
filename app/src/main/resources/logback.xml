@@ -1,0 +1,18 @@
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoders are assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+<!--    <logger name="com.datastax.dse.driver.internal.core.cql.continuous.ContinuousRequestHandlerBase" level="TRACE"/>-->
+    <logger name="com.datastax.driver.core.RequestHandler" level="TRACE"/>
+    <logger name="com.datastax.oss.metrics" level="INFO"/>
+</configuration>
