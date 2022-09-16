@@ -2,12 +2,16 @@
 .idea/
 .gradle
 /build/
+*.ipr
+*.iml
+*.iws
 
 # Ignore Gradle GUI config
 gradle-app.setting
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
+**/build/**
 
 # Cache of project
 .gradletasknamecache

@@ -8,7 +8,10 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Slf4jReporter;
 import com.codahale.metrics.jmx.JmxReporter;
 import com.datastax.oss.driver.api.core.CqlSession;
+import com.datastax.oss.driver.api.core.Version;
+import com.datastax.oss.driver.api.core.config.DefaultDriverOption;
 import com.datastax.oss.driver.api.core.cql.*;
+import com.datastax.oss.driver.internal.core.loadbalancing.helper.NodeFilterToDistanceEvaluatorAdapter;
 import com.datastax.oss.protocol.internal.request.Batch;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
@@ -18,7 +21,9 @@ import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
+import com.datastax.oss.driver.api.core.metadata.Node;
 public class App4x  {
 
     public static final Logger logger = LoggerFactory.getLogger(App4x.class.getName());
@@ -27,14 +32,18 @@ public class App4x  {
     }
     public static void main(String[] args) throws InterruptedException {
 
+        Version v = Version.parse("3.11.4");
+
+        Predicate<Node> predicate = n -> n.getCassandraVersion().equals(v) && n.getDatacenter().equals("Cassandra");
         try(CqlSession session = CqlSession.builder()
 //                    .addContactPoint(InetSocketAddress.createUnresolved("10.101.32.141", 9042))
 //                .addContactPoint(InetSocketAddress.createUnresolved("10.101.35.159", 9042))
                 .addContactPoint(InetSocketAddress.createUnresolved("10.101.32.160", 9042))
                 .withLocalDatacenter("Cassandra")
+//                .withNodeDistanceEvaluator(new NodeFilterToDistanceEvaluatorAdapter(predicate))
+                .withNodeDistanceEvaluator(new VersionDependentNodeDistanceEvaluator("Cassandra", "3.11.4"))
 //                .withAuthCredentials("", "")
                     .build() ){
-
             MetricRegistry registry = session.getMetrics().orElseThrow(() -> new IllegalStateException("Metrics are disabled")).getRegistry();
             JmxReporter reporter = JmxReporter.forRegistry(registry).inDomain("com.datastax.oss.driver").build();
             reporter.start();
