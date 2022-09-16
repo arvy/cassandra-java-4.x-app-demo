@@ -18,7 +18,7 @@ public class IPStrippingAddressTranslator implements AddressTranslator {
     @NonNull
     @Override
     public InetSocketAddress translate(@NonNull InetSocketAddress address) {
-        logger.debug("Mapping address: {}", address.getHostName());
+        logger.debug("Stripping IP address of host: {}", address.getHostName());
         return InetSocketAddress.createUnresolved(address.getHostName(), address.getPort());
     }
 
