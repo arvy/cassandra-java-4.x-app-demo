@@ -30,7 +30,7 @@ public class App4x  {
         try(CqlSession session = CqlSession.builder()
 //                    .addContactPoint(InetSocketAddress.createUnresolved("10.101.32.141", 9042))
 //                .addContactPoint(InetSocketAddress.createUnresolved("10.101.35.159", 9042))
-                .addContactPoint(InetSocketAddress.createUnresolved("10.101.32.160", 9042))
+                .addContactPoint(InetSocketAddress.createUnresolved("10.101.33.222", 9042))
                 .withLocalDatacenter("Cassandra")
 //                .withAuthCredentials("", "")
                     .build() ){

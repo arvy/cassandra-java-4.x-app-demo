@@ -11,7 +11,7 @@ import java.net.UnknownHostException;
 
 public class HostnameMappingAddressTranslator implements AddressTranslator {
 
-    public HostnameMappingAddressTranslator(DriverContext context, DriverOption configRoot) {
+    public HostnameMappingAddressTranslator(DriverContext context) {
     }
 
     @NonNull
