@@ -10,6 +10,8 @@ import com.codahale.metrics.jmx.JmxReporter;
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.cql.*;
 import com.datastax.oss.protocol.internal.request.Batch;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +28,8 @@ public class App4x  {
         return "Hello World!";
     }
     public static void main(String[] args) throws InterruptedException {
+
+        Config config = ConfigFactory.load();
 
         try(CqlSession session = CqlSession.builder().build() ){
 
