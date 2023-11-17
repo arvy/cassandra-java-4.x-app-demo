@@ -21,61 +21,18 @@ import java.util.concurrent.TimeUnit;
 
 public class App4x  {
 
-    public static final Logger logger = LoggerFactory.getLogger(App4x.class.getName());
+    public static final Logger logger = LoggerFactory.getLogger(App4x.class);
     public String getGreeting() {
         return "Hello World!";
     }
     public static void main(String[] args) throws InterruptedException {
 
-        try(CqlSession session = CqlSession.builder()
-//                    .addContactPoint(InetSocketAddress.createUnresolved("10.101.32.141", 9042))
-//                .addContactPoint(InetSocketAddress.createUnresolved("10.101.35.159", 9042))
-                .addContactPoint(InetSocketAddress.createUnresolved("10.101.32.160", 9042))
-                .withLocalDatacenter("Cassandra")
-//                .withAuthCredentials("", "")
-                    .build() ){
-
-            MetricRegistry registry = session.getMetrics().orElseThrow(() -> new IllegalStateException("Metrics are disabled")).getRegistry();
-            JmxReporter reporter = JmxReporter.forRegistry(registry).inDomain("com.datastax.oss.driver").build();
-            reporter.start();
-
-            final Slf4jReporter logReporter = Slf4jReporter.forRegistry(registry)
-                    .outputTo(LoggerFactory.getLogger("com.datastax.oss.metrics"))
-                    .convertRatesTo(TimeUnit.SECONDS)
-                    .convertDurationsTo(TimeUnit.MILLISECONDS)
-                    .build();
-            logReporter.start(10, TimeUnit.SECONDS);
+        try(CqlSession session = CqlSession.builder().build() ){
 
             Statement statement = new SimpleStatementBuilder("select release_version from system.local").build();
-//            Statement statement = new SimpleStatementBuilder("select * from keyspace1.standard1 limit 1000").build();
-//            PreparedStatement ps = session.prepare("update test.blah set items=items+? where key = ?");
             while(true) {
 
-//                if( true ){ //set dynamically
-//                    statement.setTracing(true);
-//                }
-//                BatchStatement batch = BatchStatement.newInstance(BatchType.UNLOGGED);
-//                for(int i=0; i < 10 ; i++){
-//                    BoundStatement statement = ps.bind(new HashSet<String>(Arrays.asList(RandomStringUtils.random(10))), "a");
-//                    batch.add(statement);
-//                }
-//                session.execute(batch);    // (3)
-
-//                BoundStatement statement = ps.bind(new HashSet<String>(Arrays.asList(RandomStringUtils.random(10))), "a");
-
-//                ResultSet rs = session.execute(batch);    // (3)
-
                 ResultSet rs  = session.execute(statement);    // (3)
-//
-//                for(ExecutionInfo ei : rs.getExecutionInfos()){
-//                    if( statement.isTracing() ){
-//                        QueryTrace queryTrace = ei.getQueryTrace();
-//                        logger.info("host: {}, queryTrace: {}", ei.getCoordinator(), queryTrace.toString());
-//                        for(TraceEvent event : queryTrace.getEvents()){
-//                            logger.info("Activity={}, Source={}, SourceElapsedTimeInMicros={}", event.getActivity(), event.getSourceAddress().toString(), event.getSourceElapsedMicros());
-//                        }
-//                    }
-//                }
                 logger.info("Coordinator: {}", rs.getExecutionInfo().getCoordinator().toString());
                 Row row = rs.one();
                 logger.info("Release version: {}", row.getString("release_version"));                          // (4)

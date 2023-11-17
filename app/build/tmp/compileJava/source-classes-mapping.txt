@@ -1,4 +1,0 @@
-cassandra/java/app/demo/DecodeBatchLogEntries.java
- cassandra.java.app.demo.DecodeBatchLogEntries
-cassandra/java/app/demo/App4x.java
- cassandra.java.app.demo.App4x
