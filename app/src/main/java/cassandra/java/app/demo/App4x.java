@@ -39,7 +39,7 @@ public class App4x  {
                 ResultSet rs  = session.execute(statement);    // (3)
                 logger.info("Coordinator: {}", rs.getExecutionInfo().getCoordinator().toString());
                 Row row = rs.one();
-                logger.info("Listen address {}", row.getString("listen_address"));                          // (4)
+                logger.info("Listen address {}", row.getInetAddress("listen_address").toString());                          // (4)
                 Thread.sleep(3000L);
             }
         }
