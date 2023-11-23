@@ -33,13 +33,13 @@ public class App4x  {
 
         try(CqlSession session = CqlSession.builder().build() ){
 
-            Statement statement = new SimpleStatementBuilder("select release_version from system.local").build();
+            Statement statement = new SimpleStatementBuilder("select broadcast_address, listen_address, native_transport_address from system.local").build();
             while(true) {
 
                 ResultSet rs  = session.execute(statement);    // (3)
                 logger.info("Coordinator: {}", rs.getExecutionInfo().getCoordinator().toString());
                 Row row = rs.one();
-                logger.info("Release version: {}", row.getString("release_version"));                          // (4)
+                logger.info("Listen address {}", row.getString("listen_address"));                          // (4)
                 Thread.sleep(3000L);
             }
         }
